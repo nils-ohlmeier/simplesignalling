@@ -1,0 +1,9 @@
+{
+  "name": "simplesignalling",
+  "version": "0.1",
+  "description": "A super simple socket.io-based signalling server.",
+  "private": true,
+  "dependencies": {
+    "socket.io": "0.9.16"
+  }
+}
