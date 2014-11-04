@@ -1,6 +1,6 @@
 {
   "name": "simplesignalling",
-  "version": "0.1",
+  "version": "0.1.0",
   "description": "A super simple socket.io-based signalling server.",
   "private": true,
   "dependencies": {
