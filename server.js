@@ -8,6 +8,8 @@ io.sockets.on('connection', function (socket) {
     socket.join(room);
     socket.emit("numclients",
                 {'clients': io.sockets.clients(room).length});
+    socket.emit("room",
+                {'room number': room});
     socket.broadcast.to(room).emit("client_joined");
   }
   socket.on('message', function (msg) {
