@@ -3,17 +3,23 @@ var io = require('socket.io').listen(8080);
 io.set('transports', ['websocket']);
 
 io.sockets.on('connection', function (socket) {
-  var room = socket.handshake.query.room || "";
-  if (room != "") {
-    socket.join(room);
-    socket.emit("numclients",
-                {'clients': io.sockets.clients(room).length});
-    socket.emit("room",
-                {'room number': room});
+  socket.on('subscribe', function(room) { 
+    console.log('joining room', room);
+    socket.join(room); 
+    socket.emit("subscribed",{'room': room});
+    socket.emit("numclients",{'clients': io.sockets.clients(room).length});
     socket.broadcast.to(room).emit("client_joined");
-  }
-  socket.on('message', function (msg) {
-    socket.broadcast.to(room).send(msg);
+  });
+
+  socket.on('unsubscribe', function(room) {
+    console.log('leaving room', room);
+    socket.leave(room); 
+    socket.emit("numclients",{'clients': io.sockets.clients(room).length});
+    socket.emit("client_exited");
+  });
+
+  socket.on('message', function (data) {
+    socket.broadcast.to(data.room).send(data.msg);
   });
 
   socket.on('disconnect', function () {
